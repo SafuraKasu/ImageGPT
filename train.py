@@ -1,0 +1,1 @@
+# take a batch, run it through the model, calculate loss, backpropagate, update weights, repeat.
