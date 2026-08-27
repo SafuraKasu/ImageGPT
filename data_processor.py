@@ -46,18 +46,22 @@ print(train_data[0])
 first_image = train_data[0][0].flatten()
 # print(first_image.flatten()[9]==first_image.flatten()[0])
 
-# # Preferably our context length should be 784 which is the length of flattened pixels of a 28x28 image
-# # However, for now, we shall restrict it to 128 before we run the sanity checks
-# # So this is max context length or block size
-# block_size = 128
-# # train_data[:block_size+1]
+# Preferably our context length should be 784 which is the length of flattened pixels of a 28x28 image
+# However, for now, we shall restrict it to 128 before we run the sanity checks
+# So this is max context length or block size
 
-# x = train_data[:block_size]
-# # y = train_data[1:block_size+1]
-# # for t in range(block_size):
-# #     context = x[:t+1]
-# #     target = y[t]
-# #     print(f"when input is {context} the target: {target}")
+block_size = 128
+x = first_image[:block_size]
+y = first_image[1:block_size+1]
+
+# Should print 0-127
+# for pixel in range(block_size):
+#     print(pixel)
+
+for pixel in range(block_size):
+    context = x[:pixel+1]
+    target = y[pixel]
+    print(f"when input is {context} the target: {target}")
 
 # CREATE SPECIAL TOKEN FOR CLASSES
 
