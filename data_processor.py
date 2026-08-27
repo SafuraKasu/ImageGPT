@@ -39,12 +39,12 @@ train_data, val_data = random_split(dataset, [n,m])
 
 print("First image of the train set")
 print(train_data[0])
-print("label")
-first_image = train_data[0][0]
-print(first_image.flatten()[9]==first_image.flatten()[0])
-# print(train_data[0][0].shape)
 # print("First image of the validation set")
 # print(val_data[0])
+
+# So lets now perform a very clean version of input-target on a single flattened vector from the training set.
+first_image = train_data[0][0].flatten()
+# print(first_image.flatten()[9]==first_image.flatten()[0])
 
 # # Preferably our context length should be 784 which is the length of flattened pixels of a 28x28 image
 # # However, for now, we shall restrict it to 128 before we run the sanity checks
