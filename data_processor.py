@@ -14,17 +14,17 @@ dataset = FashionMNIST(
 )
 
 #Testing
-image, label = dataset[0]
+# image, label = dataset[0]
 #print(image)
-print(image.shape)
-print(label)
-print(type(image.shape))
-print(type(label))
+# print(image.shape)
+# print(label)
+# print(type(image.shape))
+# print(type(label))
 
 # Now that we have run the basic tests, lets flatten the pixels to feed to models.
-pixels = image.flatten()
-print(f"Number of pixels in a single image {pixels.shape}")
-print(f"Number of images {len(dataset)}")
+# pixels = image.flatten()
+# print(f"Number of pixels in a single image {pixels.shape}")
+# print(f"Number of images {len(dataset)}")
 
 # Lets get the number of unique pixel values that our model has available to predict
 # There are 256 possible grayscale values that our model can predict
@@ -92,15 +92,15 @@ def get_batch(split):
 
     return input_batch, target_batch
 
-# xb, yb = get_batch('train')
-get_batch('train')
-# print('----')
+xb, yb = get_batch('train')
 
-# for b in range(batch_size): # batch dimension
-#     for t in range(block_size): # time dimension
-#         context = xb[b, :t+1]
-#         target = yb[b,t]
-#         print(f"when input is {context.tolist()} the target: {target}")
+print('----')
+
+for b in range(batch_size): # batch dimension
+    for t in range(block_size): # time dimension
+        context = xb[b, :t+1]
+        target = yb[b,t]
+        print(f"when input is {context.tolist()} the target: {target}")
 
 
 
