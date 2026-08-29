@@ -4,6 +4,7 @@ from torchvision.datasets import FashionMNIST
 from torchvision import transforms
 # For splitting dataset object
 from torch.utils.data import random_split
+import random
 
 # To train the model, we want the images as one long vector.
 dataset = FashionMNIST(
@@ -72,20 +73,33 @@ y = first_image[1:block_size+1]
 batch_size = 4 # Just how many images we want the model to process in parallel
 def get_batch(split):
     data = train_data if split == 'train' else val_data
-    first4 = list()
-    for i in range(batch_size):
-        image,label = train_data[i]
+    flattened_images = list()
+    #How will i get 4 random images from training data
+    # We need 4 random starting points
+    random_image_idx = [random.randint(0, len(data)-1) for _ in range(batch_size)]
+    for i in random_image_idx:
+        print("starting points ", i)
+        image,label = data[i]
         image_flat = image.flatten()
         # image_flat_4 = torch.stack(image_flat) #currently contains first 4 images of the train dataset, each as a flattened vector
         # IMPORTANT: first4 is now a 1D list of 4 tensors.
-        first4.append(image_flat)
+        flattened_images.append(image_flat)
 
     print("I am inside the function now")
-    print(first4)
-    batch = torch.stack(first4)
+    print(flattened_images)
+    batch = torch.stack(flattened_images)
     print(batch.shape)
-    input_batch = torch.stack([batch[i, :block_size] for i in range(batch_size)])
-    target_batch = torch.stack([batch[i, 1:block_size+1] for i in range(batch_size)])
+    input_list = list()
+    target_list = list()
+    # 1 starting point per image in the batch, so the loops have to be at the same level and not nested.
+    for i in range(batch_size):
+        # Now we wish to pick out a random chunk of 128 pixels from the image to train the model
+        # 655 is the last valid indice where we will still have 128 pixels to form a block. 783-128=655    
+        random_block_idx = random.randint(0, 655)
+        input_list.append(batch[i, random_block_idx:random_block_idx+block_size])
+        target_list.append(batch[i, random_block_idx+1:random_block_idx+block_size+1])
+    input_batch = torch.stack(input_list)
+    target_batch = torch.stack(target_list)
 
     print(input_batch.shape)
     print(target_batch.shape)
@@ -93,7 +107,7 @@ def get_batch(split):
     return input_batch, target_batch
 
 xb, yb = get_batch('train')
-
+print(xb.shape, yb.shape)
 print('----')
 
 for b in range(batch_size): # batch dimension
